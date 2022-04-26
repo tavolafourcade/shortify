@@ -1,9 +1,9 @@
 const express = require('express')
 const router = express.Router()
 const validUrl = require('valid-url')
-const shortid = require('shortid')
 const config = require('config')
 const Url = require('../models/Url')
+const { nanoid } = require('nanoid')
 /* This file contains the logic needed to create the short Url */
 
 // @route    POST /api/url/shorten
@@ -18,7 +18,7 @@ router.post('/shorten', async (req,res)=>{
   }
 
   // Create url code
-  const urlCode = shortid.generate()
+  const urlCode = nanoid(6)
 
   // Check if long Url is valid
   if (validUrl.isUri(longUrl)){
@@ -45,6 +45,7 @@ router.post('/shorten', async (req,res)=>{
       console.log(error)
       res.status(500).json('Server error')
     }
+  } else {
     res.status(401).json('Invalid long url')
   }})
 
